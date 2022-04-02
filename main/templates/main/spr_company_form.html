@@ -1,0 +1,121 @@
+{% extends "main/base_formSpr.html" %}
+
+{% block el_forms %}
+    {% if form.non_field_errors %}
+        <small class="form-text text-muted">{{ form.non_field_errors }}</small>
+    {% endif%}
+
+    {{ form.guid_update }}
+    {{ form.owner_old }}
+    {{ form.parent_old }}
+    {{ form.deleted }}
+
+    <div class="row ml-15">    
+        <div class="col-md-6">  
+            <div class="row mb-2">      
+                {{ form.type_company.label }} *
+                {{ form.type_company }}
+                {% if form.type_company.errors %}
+                    <small class="form-text text-muted">{{ form.type_company.errors }}</small>
+                {% endif %}
+            </div>   
+            <div class="row mb-2" id="parent">      
+                <div class="col-md-4">   
+                    {{ form.parent.label }} *
+                </div> 
+                <div class="col-md-8">
+                    {{ form.parent }}
+                    {% if form.parent.errors %}
+                        <small class="form-text text-muted">{{ form.parent.errors }}</small>
+                    {% endif %}
+                </div>
+            </div>   
+
+            <div class="row mb-2">         
+                <div class="col-md-4">   
+                    {{ form.name.label }} *
+                </div> 
+                <div class="col-md-6">
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <small class="form-text text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                </div>   
+                <div class="col-md-2">   
+                    {{ form.pref }}
+                    {% if form.pref.errors %}
+                        <small class="form-text text-muted">{{ form.pref.errors }}</small>
+                    {% endif %}
+                </div> 
+            </div>   
+            <div class="row mb-2">         
+                <div class="col-md-4">   
+                    {{ form.name_full.label }} *
+                </div> 
+                <div class="col-md-8">
+                    {{ form.name_full }}
+                    {% if form.name_full.errors %}
+                        <small class="form-text text-muted">{{ form.name_full.errors }}</small>
+                    {% endif %}
+                </div>
+            </div>   
+            <div class="row mb-2">         
+                <div class="col-md-12">
+                    <div class="row mb-2"> 
+                        <div class="col-md-6">
+                            {{ form.inn.label }} *
+                            {{ form.inn }}
+                            {% if form.inn.errors %}
+                                <small class="form-text text-muted">{{ form.inn.errors }}</small>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.kpp.label }}
+                            {{ form.kpp }}
+                            {% if form.kpp.errors %}
+                                <small class="form-text text-muted">{{ form.kpp.errors }}</small>
+                            {% endif %}
+                        </div>
+                    </div>                   
+                </div>   
+            </div>   
+            <div class="row mb-2">         
+                <div class="col-md-12" height: "100px">
+                    {{ form.addres_u.label }}
+                    {{ form.addres_u }}
+                </div>
+            </div> 
+            <div class="row mb-2">         
+                <div class="col-md-12">
+                    {{ form.addres_f.label }}
+                    {{ form.addres_f }}
+                </div>
+            </div> 
+            <div class="row mb-2">         
+                <div class="col-md-12">
+                    {{ form.addres_p.label }}
+                    {{ form.addres_p }}
+                </div>
+            </div>     
+        </div>  
+        <div class="col-md-6">  
+        </div>                           
+    </div>        
+    <script type="text/javascript">
+        
+        function visible() {
+            $('#parent').closest('div').css('display', ($('#id_type_company').val() =="1" ? '':'none'));
+        }
+
+        $('#id_type_company').on('change', visible);
+
+        $('#id_name').on('change', function(e) {
+            if ($('#id_name_full').val() == '' && $('#id_name').val() != '') 
+                $('#id_name_full').val($('#id_name').val())
+        });
+
+        visible();
+    </script>           
+{% endblock  %}
+
+  

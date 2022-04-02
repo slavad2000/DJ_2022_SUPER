@@ -1,0 +1,100 @@
+{% load static %}
+{% load myLib %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3"  style='display: flex; '>
+        <h6 class="m-0 font-weight-bold text-primary col-6" style='vertical-align:middle'>{{ name_spr }}</h6>
+        <div class="col-6" style='text-align: right; width: 50%;'>
+            <a href="#" class="bt_addElTabl" data-typespr="{{ nameTabl }}" data-group="false" data-table="default_tabl" title="Создать элемент">Добавить элемент</a>
+            {% if p_group %}
+                <a href="#" class="bt_addGrTabl" data-typespr="{{ nameTabl }}" data-group="true" data-table="default_tabl" title="Создать группу">Добавить группу</a>
+            {% endif%}
+        </div>
+    </div>   
+    <div>
+        {% if owner %}
+            <label for="id_owner">{{ owner_name }}</label>
+            <select class="select_owner"  data-typespr="{{ nameTabl }}" data-table="default_tabl" id="id_owner">
+                {% for el in owner %}
+                    {% if owner_id == el.pk|to_str %}
+                       <option value={{ el.pk }} selected="">{{ el.name }}</option>
+                    {% else %}
+                        <option value={{ el.pk }}>{{ el.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        {% endif %}
+    </div>    
+    <!-- Таблица групп-->
+    <div>
+        {% csrf_token %}
+        <table class="table table-hover" id='default_tabl'>
+            <thead class = "list_gr">
+                <tr>
+                    <th scope="col" width="100px">#</th>
+
+                    {% for el_c in m_column %}
+                        <th scope="col"  width="200px">{{ el_c.name }}</th>
+                    {% endfor %}
+                </tr>
+                {% for item in parent_list %}
+                    <tr> 
+                        {% if item.deleted %}
+                            <th scope="row"><img src="{% static 'main/images/folder_open-delete.png' %}" alt=""></th>                            
+                        {% else %}
+                            <th scope="row"><img src="{% static 'main/images/folder_open.png' %}" alt=""></th>                            
+                        {% endif %}
+
+                        {% for el_c in m_column %}                               
+                            <td><a class = 'gr_list' href="" data-typespr="{{ nameTabl }}" data-id="{{ item.pk }}">{{ item|getattribute:el_c.id }}</a></td>
+                        {% endfor %}        
+                    </tr>
+                {% endfor %}
+            </thead>
+            <tbody class='list_el' id="list_el">                    
+                {% for item in object_list %}
+                    <tr> 
+                        {% if item.group%}
+                            {% if item.deleted %}
+                                <th scope="row"><img src="{% static 'main/images/folder_closed-delete.png' %}" alt=""></th>                            
+                            {% else %}
+                                <th scope="row"><img src="{% static 'main/images/folder_closed.png' %}" alt=""></th>                            
+                            {% endif %}
+                        {% else %}
+                            {% if item.deleted %}
+                                <th scope="row"><img src="{% static 'main/images/bullet-red.png' %}" alt=""></th>                            
+                            {% else %}
+                                <th scope="row"><img src="{% static 'main/images/bullet-green.png' %}" alt=""></th>                            
+                            {% endif %}
+                        {% endif %}
+
+                        {% for el_c in m_column %}     
+                            <td>
+                                <div style="display: flex; justify-content: space-between">
+                                    {% if item.group %}
+                                        <a class = 'gr_list' href="" data-typespr="{{ nameTabl }}" data-id="{{ item.pk }}">{{ item|getattribute:el_c.id }}</a>
+                                    {% else %}    
+                                        <a class = 'el_list' tabindex="-1" data-typespr="{{ nameTabl }}" data-id="{{ item.pk }}">{{ item|getattribute:el_c.id }}</a>
+                                    {% endif %}    
+                                    {% if forloop.last %}
+                                        <div class="select_edit " data-typespr="{{ nameTabl }}" data-id="{{ item.pk }}">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                ...    
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <li data-type="li" class="dropdown-item" data-id="1">Редактировать</li>
+                                                <li data-type="li" class="dropdown-item" data-id="2">Сменить статус элемента</a></li>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        {% endfor %}        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>	            
+    </div>    
+</div>  
+
+<script src="{% static 'main/js/scripts_list.js' %}"></script>

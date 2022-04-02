@@ -1,0 +1,55 @@
+
+{% load static %}
+{% load myLib %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="card shadow mb-4">
+        <div class="modal-header">
+            <img id="image-delete" src="{% static 'main/images/bullet-red.png' %}" alt="">
+            <h6 id='caption_form' class="vertical-align:middle font-weight-bold text-primary">
+                {{ caption }}
+                : 
+                {% if form.name.value %} 
+                    {{ form.name.value }}
+                {% else %}
+                    ----------------
+                {% endif %}
+            </h6>
+            <div class="button_close">x</div>
+        </div>
+        <div class="modal-menu">
+            <div>
+                <button class="bn-save-close disabled" id="bn-save-close">Записать и закрыть</button>   
+                <button class="bn-save disabled" id="bn-save">Записать</button>   
+                <button class="bn-save-copy disabled" id="bn-save-copy">Скопировать</button>   
+            </div>
+            <div class="select_more">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ...    
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li data-type="li" class="dropdown-item" onclick="setDelete()">Снять / установить пометку удаления</li>
+                </ul>
+            </div>
+
+        </div>
+        
+        <div class="m-2">
+            <form name='my-form' autocomplete="false" method="post" enctype="multipart/form-data" id="my-form" data-typespr="{{ nameTabl }}" data-id="{{ id_element }}">
+                {% csrf_token %}
+ 
+                {% block el_forms  %}
+                    {{ form.as_p }}
+                {% endblock  %}
+           </form>
+        </div>    
+    </div>
+    <script src="{% static 'main/js/scripts_form.js' %}"></script>
+</body>
+</html>

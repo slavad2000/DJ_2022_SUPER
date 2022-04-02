@@ -1,0 +1,96 @@
+{% extends "main/base_formSpr.html" %}
+{% load static %}
+
+{% block el_forms %}
+    {% if form.non_field_errors %}
+        <small class="form-text text-muted">{{ form.non_field_errors }}</small>
+    {% endif%}
+
+    {{ form.guid_update }}
+    {{ form.owner_old }}
+    {{ form.parent_old }}
+    {{ form.deleted }}
+
+    <div class="row ml-15">    
+        <div class="col-md-6">     
+            <div class="row mb-2">         
+                <div class="col-md-12">
+                    {{ form.owner.label }} *
+                    {{ form.owner }}
+                    {% if form.owner.errors %}
+                        <small class="form-text text-muted">{{ form.owner.errors }}</small>
+                    {% endif %}
+                </div>
+            </div>   
+
+            <div class="row mb-2">         
+                <div class="col-md-12">
+                    {{ form.name.label }} *
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <small class="form-text text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                </div>
+            </div>       
+        </div>  
+        <div class="col-md-3">  
+            Используемые типы меню:
+            {{ form.tabl_spr_typemenu }}                        
+        </div>   
+        <div class="col-md-3">  
+            Используемые залы:
+            {{ form.tabl_spr_zaly }}                        
+        </div>  
+    </div>         
+    <br>    
+    <div>         
+        <fieldset>
+            <legend></legend>
+            {{ formset.management_form }}
+            {{ formset.non_form_errors }}
+            <div id='listUser'>
+                {% for form in formset %}
+                    <div class='element_user_form'>
+                        {{ form.as_table }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class='hidder' id='empty_form'>{{ formset.empty_form }}</div>
+        </fieldset>  
+        <button id='add_more' type="button" class="">Добавить персонал</button>      
+    </div>    
+
+    <script type="text/javascript">
+        
+        const addMoreBtn = $('#add_more');
+
+        addMoreBtn.on('click',add_new_form);
+
+        function add_new_form(event) {
+            if (event) 
+                event.preventDefault();
+            
+            //setChanged();
+
+            const total = $('#id_spr_object_users_set-TOTAL_FORMS')
+            const copyEmptyFormEl = $('#empty_form').clone(true);
+
+            copyEmptyFormEl.attr('class', 'element_user_form')
+
+            const regex = new RegExp('__prefix__', 'g');
+            copyEmptyFormEl.html(copyEmptyFormEl.html().replace(regex,$('.element_user_form').length))
+            $('#listUser').append(copyEmptyFormEl)
+
+            total.val($('.element_user_form').length)
+            
+            $(':input',document.getElementById('my-form')).bind("keyup", setChanged);
+            $(':input',document.getElementById('my-form')).bind("change", setChanged);
+            
+        }
+        
+        function visible() {
+        }
+
+        visible();
+    </script>           
+{% endblock  %}
