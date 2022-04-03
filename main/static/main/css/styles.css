@@ -1,4 +1,8 @@
 .changed::after {
   content: "*";
 }
+
+.hidder {
+  display: none;
+}
 /*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,4 @@
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
+<img class="img_select" data-input="{{ widget.name }}" id="img_{{ widget.name }}" src="{{ widget.nameFile }}" height="150" size="150" alt="фото">
+<input class="img_clear" type="checkbox"  data-input="{{ widget.name }}">
+<input type="checkbox" name="imageFile-clear" id="imageFile-clear_id">

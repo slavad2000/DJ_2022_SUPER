@@ -1,76 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .vspomogatelnuy import *
+from django.http.response import JsonResponse
 from django.apps import apps
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
-from .spr_company import *
-from .spr_object import *
-from .spr_typemenu import *
-from .spr_zaly import *
-from django.db.models import Q
-from django.http.response import JsonResponse
 from django.forms.models import inlineformset_factory
-from django.shortcuts import redirect
+from .models import *
+from .forms import *
 
-
-''' *** ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ *** '''
-
-'''Проверка на ИСТИНУ'''
-def str2bool(v):
-  return v.lower() in ("yes", "true", "t", "1", "on")
-
-
-'''Проверяем наличие реквизита в моделе'''
-def get_param(model,param):
-    try: _param = True if (model._meta.get_field(param)) else False
-    except: _param = False
-    return _param 
-
-
-'''Получение иерархии групп'''
-def list_parent (item,list):
-    if (item):
-        list.insert(0,item)
-        list_parent(item.parent,list)
-
-
-'''Процедура смены признака удаления'''
-def smenaStatusDel(request, *args, **kwargs):
-    Spr = apps.get_model('main', kwargs['nameTabl'])
-    obj = Spr.objects.get(pk=kwargs['pk'])
-    obj.deleted = not obj.deleted
-    obj.save();
-
-    group = obj.group if (get_param(Spr,'group')) else False
-
-    return JsonResponse({'deleted': obj.deleted, 'group':group}, status=200)
-    
-
-'''Копирование элемента'''
-def copyElement(request, *args, **kwargs):
-    model = apps.get_model('main', kwargs['nameTabl'])
-    obj = model.objects.get(pk=kwargs['pk'])
-    obj.pk = None
-    obj.code =''
-
-    try:
-        p_group = obj.group 
-    except:
-        p_group = False
-
-    temp = template(kwargs['nameTabl'], {'type': 'form_gr' if (p_group) else 'form_el'})
-    form_class = temp['classForm']
-    template_name = temp['template']
-
-    context = {}
-    context['form'] = form_class(instance=obj, user=request.user)
-    context['caption']= model._meta.verbose_name
-    context['nameTabl']= model.__name__
-    context['id_element']= 'add'
-
-    return render(request, template_name, context)
-
-        
-'''************************************************************************************'''    
 
 '''Шаблоны форм соответствия модели'''
 def template(nameSpr,param = ''): 
@@ -122,7 +59,211 @@ def template(nameSpr,param = ''):
                                 'classForm': spr_zalyForm,
                                 'template': 'main/base_formSpr.html'
                             },
-                        },                        
+                        },   
+        'spr_doljnosty': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                              'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_doljnostyForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },
+        'spr_fizlitso': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                            'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_fizlitsoForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },
+        'spr_role': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                            'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_roleForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        }, 
+        'spr_units': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                            'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_unitsForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },    
+        'spr_nomenklatura': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_nomenklaturaForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                            'form_gr': {
+                                'classForm': spr_nomenklaturaForm_gr,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },    
+        'spr_variantoplaty': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_variantoplatyForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },    
+        'spr_statiyzatrat': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_statiyzatratForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },      
+        'spr_priznakdelete': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_priznakdeleteForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },      
+        'spr_pictures': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_picturesForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },    
+        'spr_otdely': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_otdelyForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },        
+        'spr_stavkands': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_stavkandsForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },  
+        'spr_categories': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_categoriesForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },  
+        'spr_grprint': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_grprintForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },       
+        'spr_menu': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_menuForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                            'form_gr': {
+                                'classForm': spr_menuForm_gr,
+                                'template': 'main/base_formSpr.html'
+                            },                            
+                        },     
+        'spr_conditions': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_conditionsForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                        },   
+        'spr_mod': {
+                            'class_object_create':create_spr,
+                            'class_object_update':update_spr,
+                             'form_list': {
+                                'classForm': None,
+                                'template':'main/list_default.html'
+                            },
+                            'form_el': {
+                                'classForm': spr_modForm,
+                                'template': 'main/base_formSpr.html'
+                            },
+                            'form_gr': {
+                                'classForm': spr_modForm_gr,
+                                'template': 'main/base_formSpr.html'
+                            },                            
+                        },                                                                                                                                                                                                                                                                                                                                                               
     }  
 
     temp = {
@@ -150,40 +291,6 @@ def template(nameSpr,param = ''):
             pass 
 
     return temp                          
-
-''' *** URL *** '''
-
-'''Главная страница'''
-def index(request):
-    MENU = [
-        {
-            'id':'spr', 
-            'name':'Справочники',
-            'data': [
-                {'id':'spr_company','name':'Структура компаний'},
-            ]
-        }
-    ]
-    return render(request, 'main/index.html', {'MENU':MENU})
-
-
-'''Ссылка на создание нового элемента'''
-def def_create_spr (request, *args, **kwargs):
-    return template(kwargs['nameTabl'])['class_object_create'].as_view()(request, *args, **kwargs)
-
-
-'''ссылка на редактирование элемента'''
-def def_update_spr (request, *args, **kwargs):
-    if ('delete' in request.POST):
-        return smenaStatusDel(request, *args, **kwargs)
-
-    if ('copy' in request.POST):
-        return copyElement(request, *args, **kwargs)
-
-    return template(kwargs['nameTabl'])['class_object_update'].as_view()(request, *args, **kwargs)
-
-
-'''************************************************************************************'''    
 
 
 '''Дефолтные параметры справочника'''
@@ -266,7 +373,7 @@ class default_spr:
             return super().form_valid(form)      
         except Exception as e:
             form.add_error('__all__', e)
-            return super().form_invalid(form)          
+            return super().form_invalid(form)  
 
 
 '''Дефолтные класс создание элемента'''
@@ -280,7 +387,7 @@ class create_spr(default_spr,CreateView):
 '''Дефолтные класс редактирования элемента'''
 class update_spr(default_spr,UpdateView):
     def get_form_kwargs(self):
-        return self.def_get_form_kwargs()   
+        return self.def_get_form_kwargs()              
 
 
 '''Список справочника'''  
@@ -364,7 +471,92 @@ class def_list(ListView):
         return context       
 
 
-''' СПРАВОЧНИК ПОДРАЗДЕЛЕНИЯ '''
+'''Ссылка на создание нового элемента'''
+def def_create_spr (request, *args, **kwargs):
+    return template(kwargs['nameTabl'])['class_object_create'].as_view()(request, *args, **kwargs)
+
+
+'''ссылка на редактирование элемента'''
+def def_update_spr (request, *args, **kwargs):
+    if ('delete' in request.POST):
+        return smenaStatusDel(request, *args, **kwargs)
+
+    if ('copy' in request.POST):
+        return copyElement(request, *args, **kwargs)
+
+    return template(kwargs['nameTabl'])['class_object_update'].as_view()(request, *args, **kwargs)    
+
+
+'''Процедура смены признака удаления'''
+def smenaStatusDel(request, *args, **kwargs):
+    Spr = apps.get_model('main', kwargs['nameTabl'])
+    obj = Spr.objects.get(pk=kwargs['pk'])
+    obj.deleted = not obj.deleted
+    obj.save();
+
+    group = obj.group if (get_param(Spr,'group')) else False
+
+    return JsonResponse({'deleted': obj.deleted, 'group':group}, status=200)
+    
+
+'''Копирование элемента'''
+def copyElement(request, *args, **kwargs):
+    model = apps.get_model('main', kwargs['nameTabl'])
+    obj = model.objects.get(pk=kwargs['pk'])
+    obj.pk = None
+    obj.code =''
+
+    try:
+        p_group = obj.group 
+    except:
+        p_group = False
+
+    temp = template(kwargs['nameTabl'], {'type': 'form_gr' if (p_group) else 'form_el'})
+    form_class = temp['classForm']
+    template_name = temp['template']
+
+    context = {}
+    context['form'] = form_class(instance=obj, user=request.user)
+    context['caption']= model._meta.verbose_name
+    context['nameTabl']= model.__name__
+    context['id_element']= 'add'
+
+    return render(request, template_name, context)
+
+
+def index(request):
+    MENU = [
+        {
+            'id':'spr', 
+            'name':'Справочники',
+            'data': [
+                {'id':'spr_company','name':'Структура компаний'},
+                {'id':'spr_object','name':'Подразделения'},
+                {'id':'spr_typemenu','name':'Типы меню'},
+                {'id':'spr_zaly','name':'Залы'},
+                {'id':'spr_fizlitso','name':'Физические лица'},
+                {'id':'spr_role','name':'Права доступа'},
+                {'id':'spr_doljnosty','name':'Должности персонала'},
+                {'id':'spr_units','name':'Классификатор единиц измерения'},
+                {'id':'spr_nomenklatura','name':'Номенклатура'},
+                {'id':'spr_variantoplaty','name':'Способы оплаты'},
+                {'id':'spr_statiyzatrat','name':'Статьи затрат'},
+                {'id':'spr_priznakdelete','name':'Признаки удаления'},
+                {'id':'spr_pictures','name':'Картинки on-line заказов'},
+                {'id':'spr_otdely','name':'Отделы'},
+                {'id':'spr_stavkands','name':'Ставки НДС'},
+                {'id':'spr_categories','name':'Категории'},
+                {'id':'spr_grprint','name':'Группы печати'},
+                {'id':'spr_menu','name':'Меню'},
+                {'id':'spr_conditions','name':'Условия примнения скидок\наценок'},
+                {'id':'spr_mod','name':'Модификаторы'},
+            ]
+        }
+    ]    
+    return render(request, 'main/index.html', {'MENU':MENU})
+
+
+    
 class create_spr_object(default_spr,CreateView):
     UsersFormSet = inlineformset_factory(spr_object, spr_object_users, form = spr_object_usersForm_el, fk_name='owner', fields = '__all__',extra=0) 
     def get_initial(self):
