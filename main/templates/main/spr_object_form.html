@@ -11,6 +11,7 @@
     {{ form.parent_old }}
     {{ form.deleted }}
 
+
     <div class="row ml-15">    
         <div class="col-md-6">     
             <div class="row mb-2">         
@@ -57,7 +58,11 @@
             </div>
             <div class='hidder' id='empty_form'>{{ formset.empty_form }}</div>
         </fieldset>  
+
+        <input type="button" class="bn-save-close image_bn disabled" id="bn-save-close" src="{% static 'main/images/save_accept.png' %}" alt="Записать и закрыть" title = "Записать и закрыть">
+        
         <button id='add_more' type="button" class="">Добавить персонал</button>      
+        <button type="button" class="btn btn-link">Link</button> 
     </div>    
 
     <script type="text/javascript">

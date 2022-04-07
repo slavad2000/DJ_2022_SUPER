@@ -10,34 +10,42 @@
 </head>
 <body>
     <div class="card shadow mb-4">
-        <div class="modal-header">
-            <img id="image-delete" src="{% static 'main/images/bullet-red.png' %}" alt="">
-            <h6 id='caption_form' class="vertical-align:middle font-weight-bold text-primary">
-                {{ caption }}
-                : 
-                {% if form.name.value %} 
-                    {{ form.name.value }}
-                {% else %}
-                    ----------------
-                {% endif %}
-            </h6>
-            <div class="button_close">x</div>
-        </div>
-        <div class="modal-menu">
-            <div>
-                <button class="bn-save-close disabled" id="bn-save-close">Записать и закрыть</button>   
-                <button class="bn-save disabled" id="bn-save">Записать</button>   
-                <button class="bn-save-copy disabled" id="bn-save-copy">Скопировать</button>   
-            </div>
-            <div class="select_more">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    ...    
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li data-type="li" class="dropdown-item" onclick="setDelete()">Снять / установить пометку удаления</li>
-                </ul>
-            </div>
+        <div class="my-header">
+            <div class="my-header-flex">
+                <img id="image-delete" src="{% static 'main/images/bullet-red.png' %}" alt="">
+                <h6 id='caption_form' class="vertical-align:middle font-weight-bold text-primary mb-0">
+                    {{ caption }}
+                    : 
 
+                    {% if id_element == "add" %} 
+                        Новый 
+                    {% endif %}
+
+                    {% if form.name.value %} 
+                        {{ form.name.value }}
+                    {% else %}
+                        ----------------
+                    {% endif %}
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>            
+            </div>                
+            <div class="my-header-flex">    
+                <div class = "my-header-flex">
+                    <input type="image" class="bn-save-close image_bn disabled" id="bn-save-close" src="{% static 'main/images/save_accept.png' %}" alt="Записать и закрыть" title = "Записать и закрыть">
+                    <input type="image" class="bn-save image_bn disabled" id="bn-save" src="{% static 'main/images/save.png' %}" alt="Записать" title = "Записать">
+                    <input type="image" class="bn-save-copy image_bn disabled" id="bn-save-copy" src="{% static 'main/images/save_add.png' %}" alt="Скопировать" title = "Скопировать">
+                </div>
+                <div class="select_more">
+                    <a class="nav-link dropdown-toggle select_more-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        ...    
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li data-type="li" class="dropdown-item" onclick="setDelete()">Снять / установить пометку удаления</li>
+                    </ul>
+                </div>
+            </div>
         </div>
         
         <div class="m-2">

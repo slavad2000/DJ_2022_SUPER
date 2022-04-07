@@ -48,12 +48,12 @@ class spr_companyForm(spr_defaultForm):
     parent = forms.ModelChoiceField(queryset=spr_company.objects.all(), required=False, label='Головная организация:', widget=forms.Select(attrs={'class': 'form-select'}))
     name = forms.CharField(max_length=50, label='Наименование:', widget=forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}))
     name_full = forms.CharField(max_length=250, label='Полное наименование:', widget=forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}))
-    inn = forms.CharField(max_length=12, label='ИНН:', widget=forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}))
-    kpp = forms.CharField(max_length=9, label='КПП:', required=False, widget=forms.NumberInput(attrs={'class': 'form-control', 'autocomplete': 'off'}))
+    inn = forms.CharField(max_length=12, label='ИНН:', widget=forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}))
+    kpp = forms.CharField(max_length=9, label='КПП:', required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}))
     addres_u = forms.CharField(max_length=250, label='Юридический адрес:', required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'autocomplete': 'off'}))
     addres_f = forms.CharField(max_length=250, label='Фактический адрес:', required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'autocomplete': 'off'}))
     addres_p = forms.CharField(max_length=250, label='Почтовый адрес:', required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'autocomplete': 'off'}))
-    pref = forms.CharField(max_length=2, label='Префикс:', widget=forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}))
+    pref = forms.CharField(max_length=2, label='Префикс:', widget=forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off', 'title': 'Префикс'}))
 
     class Meta:
         model = spr_company
@@ -75,7 +75,7 @@ class spr_companyForm(spr_defaultForm):
         super(spr_companyForm,self).__init__(*args, **kwargs)
         if (self.instance):
             self.fields['parent'].queryset = spr_company.objects.filter(reg_global=self.user.reg_global, deleted=False, parent__isnull=True)
-
+ 
 
 class spr_doljnostyForm(spr_defaultForm):
     class Meta:
@@ -310,23 +310,23 @@ class spr_conditionsForm(spr_defaultForm):
         exclude = ['reg_global']                                                
 
 
-class spr_modForm(spr_defaultForm):
+class spr_modificatorsForm(spr_defaultForm):
     class Meta:
-        model = spr_mod
+        model = spr_modificators
         exclude = ['reg_global']      
 
 
-class spr_modForm_gr(spr_defaultForm):
+class spr_modificatorsForm_gr(spr_defaultForm):
     name = forms.CharField(max_length=50, label='Наименование:', widget=forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off', 'spellcheck': 'false'}))
-    parent = forms.ModelChoiceField(queryset=spr_mod.objects.all(), required=False, label='Подгруппа:', widget=forms.Select())
+    parent = forms.ModelChoiceField(queryset=spr_modificators.objects.all(), required=False, label='Подгруппа:', widget=forms.Select())
     group = forms.BooleanField(widget=forms.widgets.HiddenInput(), required=False)
 
     class Meta:
-        model = spr_mod
+        model = spr_modificators
         exclude = ['reg_global']  
 
     def __init__(self, *args, **kwargs):
-        super(spr_modForm_gr,self).__init__(*args, **kwargs)
+        super(spr_modificatorsForm_gr,self).__init__(*args, **kwargs)
         if (self.instance):
             self.fields['group'].initial = True
-            self.fields['parent'].queryset = spr_mod.objects.filter(Q(reg_global=self.user.reg_global),Q(group = True))   
+            self.fields['parent'].queryset = spr_modificators.objects.filter(Q(reg_global=self.user.reg_global),Q(group = True))   

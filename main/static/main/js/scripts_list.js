@@ -1,7 +1,9 @@
 function addEl(e) {
     e.preventDefault();
+    console.log($(e));
 
     var $but = $(e.target);
+
     var $owner = $(".select_owner")
 
     var parent = $("#" + $but.data('table') + " thead tr:last a");
@@ -21,8 +23,8 @@ function addEl(e) {
     })
 }    
 
-$(".bt_addGrTabl").on('click', addEl);
-$(".bt_addElTabl").on('click', addEl);
+$(".bn_addGrTabl").on('click', addEl);
+$(".bn_addElTabl").on('click', addEl);
 //*
 function listEl(e) {
     e.preventDefault();
@@ -79,7 +81,7 @@ $(".select_edit").on('click', function(e) {
                     alert(response)
                 }
             })
-        } else { //Пометка на удаление
+        } else if ($select.data('id') === 2) { //Пометка на удаление
             var select_edit = $select.closest('.select_edit')
 
             $.ajax({
@@ -108,7 +110,24 @@ $(".select_edit").on('click', function(e) {
                     alert(response)
                 }
             })
-        }    
+        } else { //Копирование
+            var select_edit = $select.closest('.select_edit')
+
+            $.ajax({
+                type : 'post',
+                url :  '/tabl/' + select_edit.data('typespr') + '/' + select_edit.data('id'),
+                data : {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                    'copy': true},
+                 success : function(response){
+                    $('article').html(response);
+                    setChanged();
+                    visibility();
+                },
+                error : function(response){
+                    alert(response)
+                }
+            })
+        }   
     }
  });
 

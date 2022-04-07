@@ -459,9 +459,9 @@ class spr_conditions_tabl_categories(spr_default):
         return arr
 
 
-class spr_mod(spr_default):
+class spr_modificators(spr_default):
     name = models.CharField(max_length=100, verbose_name='Наименование')
-    parent = models.ForeignKey('spr_mod',null=True,blank=True, on_delete=models.PROTECT,verbose_name='Подгруппа')
+    parent = models.ForeignKey('spr_modificators',null=True,blank=True, on_delete=models.PROTECT,verbose_name='Подгруппа')
     group = models.BooleanField(default=False, verbose_name='Группа')
     min_quantity = models.PositiveSmallIntegerField(blank=True,default=0,verbose_name='Мин. кол.')
     max_quantity = models.PositiveSmallIntegerField(blank=True,default=0,verbose_name='Макс. кол.')
@@ -477,9 +477,9 @@ class spr_mod(spr_default):
         verbose_name_plural = 'Справочник: \"Модификаторы\"'
 
 
-class spr_menu_tabl_spr_mod(spr_default):
+class spr_menu_tabl_spr_modificators(spr_default):
     owner = models.ForeignKey('spr_menu', on_delete=models.PROTECT,verbose_name='Позиция меню')
-    mod = models.ForeignKey('spr_mod', verbose_name="Модификатор", on_delete=models.PROTECT)
+    modificator = models.ForeignKey('spr_modificators', verbose_name="Модификатор", on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Меню (модификатор)'
@@ -491,7 +491,7 @@ class spr_menu_tabl_spr_mod(spr_default):
     def visible_colum_list(self):
         arr=[]
         arr.append({'id': 'owner', 'name': self._meta.get_field('owner').verbose_name,'width':'99%'})
-        arr.append({'id': 'mod', 'name': self._meta.get_field('mod').verbose_name,'width':'99%'})
+        arr.append({'id': 'modificator', 'name': self._meta.get_field('modificator').verbose_name,'width':'99%'})
         return arr
 
 

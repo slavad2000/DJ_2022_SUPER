@@ -5,26 +5,39 @@
     <div class="card-header py-3"  style='display: flex; '>
         <h6 class="m-0 font-weight-bold text-primary col-6" style='vertical-align:middle'>{{ name_spr }}</h6>
         <div class="col-6" style='text-align: right; width: 50%;'>
-            <a href="#" class="bt_addElTabl" data-typespr="{{ nameTabl }}" data-group="false" data-table="default_tabl" title="Создать элемент">Добавить элемент</a>
+            <input type="image" class="bn_addElTabl image_bn" data-typespr="{{ nameTabl }}" data-group="false" data-table="default_tabl"src="{% static 'main/images/Symbol_-_Add.png' %}" alt="Добавить элемент">
+
             {% if p_group %}
-                <a href="#" class="bt_addGrTabl" data-typespr="{{ nameTabl }}" data-group="true" data-table="default_tabl" title="Создать группу">Добавить группу</a>
+                <input type="image" class="bn_addGrTabl image_bn" data-typespr="{{ nameTabl }}" data-group="true" data-table="default_tabl"src="{% static 'main/images/Folder-Add.png' %}" alt="Добавить группу">
             {% endif%}
         </div>
     </div>   
-    <div>
-        {% if owner %}
-            <label for="id_owner">{{ owner_name }}</label>
-            <select class="select_owner"  data-typespr="{{ nameTabl }}" data-table="default_tabl" id="id_owner">
-                {% for el in owner %}
-                    {% if owner_id == el.pk|to_str %}
-                       <option value={{ el.pk }} selected="">{{ el.name }}</option>
-                    {% else %}
-                        <option value={{ el.pk }}>{{ el.name }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        {% endif %}
-    </div>    
+
+    {% if owner %}
+        <div class="row"> 
+            <div class="col-md-12">
+                <div class = "row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_owner" class="label-bold">{{ owner_name }}:</label>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="select_owner form-select"  data-typespr="{{ nameTabl }}" data-table="default_tabl" id="id_owner">
+                            {% for el in owner %}
+                                {% if owner_id == el.pk|to_str %}
+                                    <option value={{ el.pk }} selected="">{{ el.name }}</option>
+                                {% else %}
+                                    <option value={{ el.pk }}>{{ el.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>                
+                </div>            
+            </div>        
+        </div>    
+    {% endif %}
+
     <!-- Таблица групп-->
     <div>
         {% csrf_token %}
@@ -84,6 +97,7 @@
                                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                                 <li data-type="li" class="dropdown-item" data-id="1">Редактировать</li>
                                                 <li data-type="li" class="dropdown-item" data-id="2">Сменить статус элемента</a></li>
+                                                <li data-type="li" class="dropdown-item" data-id="3">Скопировать</a></li>
                                             </ul>
                                         </div>
                                     {% endif %}

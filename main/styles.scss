@@ -4,3 +4,89 @@
 .hidder {
     display: none
 }
+
+.my-header {
+    margin: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    padding-bottom: 0.5rem;
+}
+
+.my-header-flex {
+    display: flex;
+    border-bottom: 1;
+}
+
+button.close {
+    margin: -0.5rem -0.5rem 0rem auto;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border: 0;
+}
+
+.image_bn {
+    width: 32px;
+    height: 32px;
+}
+
+#bn-save-close, #bn-save, #bn-save-copy {
+    border: 0;
+    background-color: transparent;
+    margin-right: 0.5rem;
+}
+
+.select_more {
+    margin: 0rem 0rem 0rem auto;
+    padding: 0rem 0rem;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+.select_more-link {
+    padding:0rem 0.5rem;
+}
+
+.label-bold { 
+    font-weight:500;
+}
+
+ul.errorlist {
+    padding-left: -1.5rem !important;
+    color: crimson;
+}
+.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+/*
+.my-header-flex, .modal-header-name-status-el{
+    display: flex;
+    align-items: center;
+}*/
+/*
+.modal-header .close {
+    padding: 1rem;
+    margin: -1rem -1rem -1rem auto;
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    background-color: transparent;
+    border: 0;
+    opacity: 0.7;
+    .close:focus, .close:hover //{
+        color: #000;
+        text-decoration: none;
+        opacity: .75;
+    //}
+}*/

@@ -66,7 +66,7 @@ function saveForms(e, dop_command={}) {
     })
 }
 
-$('.button_close').on('click', function(e) {
+$('button.close').on('click', function(e) {
     if (e)
         e.preventDefault();
 

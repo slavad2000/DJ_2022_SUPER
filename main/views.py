@@ -248,7 +248,7 @@ def template(nameSpr,param = ''):
                                 'template': 'main/base_formSpr.html'
                             },
                         },   
-        'spr_mod': {
+        'spr_modificators': {
                             'class_object_create':create_spr,
                             'class_object_update':update_spr,
                              'form_list': {
@@ -256,11 +256,11 @@ def template(nameSpr,param = ''):
                                 'template':'main/list_default.html'
                             },
                             'form_el': {
-                                'classForm': spr_modForm,
+                                'classForm': spr_modificatorsForm,
                                 'template': 'main/base_formSpr.html'
                             },
                             'form_gr': {
-                                'classForm': spr_modForm_gr,
+                                'classForm': spr_modificatorsForm_gr,
                                 'template': 'main/base_formSpr.html'
                             },                            
                         },                                                                                                                                                                                                                                                                                                                                                               
@@ -414,7 +414,7 @@ class def_list(ListView):
             else:
                 self.owner = apps.get_model('main', self.model._meta.get_field('owner').target_field.model.__name__).objects.all()            
 
-            self.owner_name = self.model._meta.get_field('owner').target_field.model._meta.verbose_name_plural
+            self.owner_name = self.model._meta.get_field('owner').target_field.model._meta.verbose_name
             self.owner_class = self.model._meta.get_field('owner').target_field.model.__name__ 
 
             self.owner_id = '' 
@@ -549,7 +549,7 @@ def index(request):
                 {'id':'spr_grprint','name':'Группы печати'},
                 {'id':'spr_menu','name':'Меню'},
                 {'id':'spr_conditions','name':'Условия примнения скидок\наценок'},
-                {'id':'spr_mod','name':'Модификаторы'},
+                {'id':'spr_modificators','name':'Модификаторы'},
             ]
         }
     ]    

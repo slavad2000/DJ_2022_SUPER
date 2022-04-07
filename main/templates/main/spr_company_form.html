@@ -12,16 +12,18 @@
 
     <div class="row ml-15">    
         <div class="col-md-6">  
-            <div class="row mb-2">      
-                {{ form.type_company.label }} *
-                {{ form.type_company }}
-                {% if form.type_company.errors %}
-                    <small class="form-text text-muted">{{ form.type_company.errors }}</small>
-                {% endif %}
+            <div class="row mb-2">    
+                <div class="col-md-12">  
+                    <label class="label-bold">{{ form.type_company.label }} *</label>
+                    {{ form.type_company }}
+                    {% if form.type_company.errors %}
+                        <small class="form-text text-muted">{{ form.type_company.errors }}</small>
+                    {% endif %}
+                </div>   
             </div>   
             <div class="row mb-2" id="parent">      
                 <div class="col-md-4">   
-                    {{ form.parent.label }} *
+                    <label class="label-bold">{{ form.parent.label }} *</label>
                 </div> 
                 <div class="col-md-8">
                     {{ form.parent }}
@@ -33,7 +35,7 @@
 
             <div class="row mb-2">         
                 <div class="col-md-4">   
-                    {{ form.name.label }} *
+                    <label class="label-bold">{{ form.name.label }} *</label>
                 </div> 
                 <div class="col-md-6">
                     {{ form.name }}
@@ -50,7 +52,7 @@
             </div>   
             <div class="row mb-2">         
                 <div class="col-md-4">   
-                    {{ form.name_full.label }} *
+                    <label class="label-bold">{{ form.name_full.label }} *</label>
                 </div> 
                 <div class="col-md-8">
                     {{ form.name_full }}
@@ -63,7 +65,7 @@
                 <div class="col-md-12">
                     <div class="row mb-2"> 
                         <div class="col-md-6">
-                            {{ form.inn.label }} *
+                            <label class="label-bold">{{ form.inn.label }} *</label>
                             {{ form.inn }}
                             {% if form.inn.errors %}
                                 <small class="form-text text-muted">{{ form.inn.errors }}</small>
